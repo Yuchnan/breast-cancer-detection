@@ -29,22 +29,22 @@ const ConfusionMatrix = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
         >
-            <h2 className='text-lg font-medium mb-4 text-gray-100'>Confusion Matrix KNN</h2>
-            <table className="mb-4" border="1" style={{ width: "100%", textAlign: "center" }}>
+            <h2 className='text-lg font-medium mb-4 text-gray-100'>Confusion Matrix Gaussian NB</h2>
+            <table border="1" style={{ width: "100%", textAlign: "center" }}>
                 <thead>
                     <tr>
                         <th></th>
-                        {Object.keys(confusionMatrix.knn || {}).map((key) => (
+                        {Object.keys(confusionMatrix.gnb || {}).map((key) => (
                             <th key={key}>{key}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(confusionMatrix.knn || {}).map((rowKey) => (
+                    {Object.keys(confusionMatrix.gnb || {}).map((rowKey) => (
                         <tr key={rowKey}>
                             <th>{rowKey}</th>
-                            {Object.keys(confusionMatrix.knn[rowKey] || {}).map((colKey) => (
-                                <td key={colKey}>{confusionMatrix.knn[rowKey][colKey]}</td>
+                            {Object.keys(confusionMatrix.gnb[rowKey] || {}).map((colKey) => (
+                                <td key={colKey}>{confusionMatrix.gnb[rowKey][colKey]}</td>
                             ))}
                         </tr>
                     ))}

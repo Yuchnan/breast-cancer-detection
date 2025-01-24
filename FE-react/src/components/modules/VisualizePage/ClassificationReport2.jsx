@@ -12,16 +12,17 @@ const ClassificationReport = () => {
         // Fetch classification report
         axios.get("http://127.0.0.1:5000/classification-report")
             .then((response) => {
-                const knnReport = Object.keys(response.data.knn)
+                const gnbReport = Object.keys(response.data.gnb)
                     .filter(key => key !== "accuracy")
                     .map((key) => ({
-                        model: "KNN",
+                        model: "GNB",
                         class: key,
-                        precision: response.data.knn[key].precision,
-                        recall: response.data.knn[key].recall,
-                        f1_score: response.data.knn[key]["f1-score"]
+                        precision: response.data.gnb[key].precision,
+                        recall: response.data.gnb[key].recall,
+                        f1_score: response.data.gnb[key]["f1-score"]
                     }));
-                setClassificationReport([...knnReport]);
+
+                setClassificationReport([...gnbReport]);
             })
             .catch((error) => {
                 setError("Gagal mengambil classification report: " + error.message);
@@ -39,7 +40,7 @@ const ClassificationReport = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
         >
-            <h2 className='text-lg font-medium mb-4 text-gray-100'>Classification Report KNN</h2>
+            <h2 className='text-lg font-medium mb-4 text-gray-100'>Classification Report Gaussian NB</h2>
             <div>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={classificationReport}>
