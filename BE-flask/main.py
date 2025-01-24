@@ -3,7 +3,8 @@ from flask_cors import CORS
 import mysql.connector
 import pandas as pd
 from subprocess import call
-from knn import conf_matrix_df, report, results_df
+from knn import conf_matrix_df_knn, reportKNN, results_df_knn
+from gaussian import conf_matrix_df_gnb, reportGNB, results_df_gnb
 
 app = Flask(__name__)
 CORS(app)
@@ -190,17 +191,25 @@ def truncate_all_data():
 # Endpoint untuk confusion matrix
 @app.route('/confusion-matrix', methods=['GET'])
 def get_confusion_matrix():
-    return jsonify(conf_matrix_df.to_dict())
+    return jsonify({
+        "knn": conf_matrix_df_knn.to_dict(),
+        "gnb": conf_matrix_df_gnb.to_dict()
+    })
 
-# Endpoint untuk classification report
 @app.route('/classification-report', methods=['GET'])
 def get_classification_report():
-    return jsonify(report)
+    return jsonify({
+        "knn": reportKNN,
+        "gnb": reportGNB
+    })
 
-# Endpoint untuk hasil prediksi
 @app.route('/predicted-results', methods=['GET'])
 def get_predicted_results():
-    return results_df.to_dict(orient='records')
+    return jsonify({
+        "knn": results_df_knn.to_dict(orient='records'),
+        "gnb": results_df_gnb.to_dict(orient='records')
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -44,8 +44,8 @@ labels = ["M", "B"]
 
 print(classification_report(y_test, y_pred))
 conf_matrix = confusion_matrix(y_test, y_pred)
-conf_matrix_df = pd.DataFrame(conf_matrix, index=labels, columns=labels)
-print(conf_matrix_df)
+conf_matrix_df_knn = pd.DataFrame(conf_matrix, index=labels, columns=labels)
+print(conf_matrix_df_knn)
 
 sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
@@ -56,24 +56,24 @@ plt.show()
 accuracy = accuracy_score(y_test, y_pred)
 print(f"KNN Accuracy: {accuracy * 100:.2f}%")
 
-results_df = pd.DataFrame(x_test, columns=features)
-results_df['actual_label'] = y_test.values
-results_df['predicted_label'] = y_pred
-results_df['id'] = range(1, len(results_df) + 1)
-results_df.insert(0, 'id', results_df.pop('id'))
+results_df_knn = pd.DataFrame(x_test, columns=features)
+results_df_knn['actual_label'] = y_test.values
+results_df_knn['predicted_label'] = y_pred
+results_df_knn['id'] = range(1, len(results_df_knn) + 1)
+results_df_knn.insert(0, 'id', results_df_knn.pop('id'))
 
 # Saving results to database and CSV file
-results_df.to_sql(name='knn', con=engine, if_exists='replace', index=False)
+results_df_knn.to_sql(name='knn', con=engine, if_exists='replace', index=False)
 
 # Getting the report as a dictionary
-report = classification_report(y_test, y_pred, output_dict=True)
+reportKNN = classification_report(y_test, y_pred, output_dict=True)
 
 # Getting values for class 'M'
-precision_M = report['M']['precision']
-recall_M = report['M']['recall']
-f1_M = report['M']['f1-score']
+precision_M = reportKNN['M']['precision']
+recall_M = reportKNN['M']['recall']
+f1_M = reportKNN['M']['f1-score']
 
 # Getting values for class 'B'
-precision_B = report['B']['precision']
-recall_B = report['B']['recall']
-f1_B = report['B']['f1-score']
+precision_B = reportKNN['B']['precision']
+recall_B = reportKNN['B']['recall']
+f1_B = reportKNN['B']['f1-score']

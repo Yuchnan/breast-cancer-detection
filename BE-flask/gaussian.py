@@ -43,8 +43,8 @@ labels = ["M", "B"]
 
 print(classification_report(y_test, y_pred))
 conf_matrix = confusion_matrix(y_test, y_pred)
-conf_matrix_df = pd.DataFrame(conf_matrix, index=labels, columns=labels)
-print(conf_matrix_df)
+conf_matrix_df_gnb = pd.DataFrame(conf_matrix, index=labels, columns=labels)
+print(conf_matrix_df_gnb)
 
 sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
@@ -55,32 +55,24 @@ plt.show()
 accuracy = accuracy_score(y_test, y_pred)
 print(f"GaussianNB Accuracy: {accuracy * 100:.2f}%")
 
-results_df = pd.DataFrame(x_test, columns=features)
-results_df['actual_label'] = y_test.values
-results_df['predicted_label'] = y_pred
-results_df['id'] = range(1, len(results_df) + 1)
-results_df.insert(0, 'id', results_df.pop('id'))
+results_df_gnb = pd.DataFrame(x_test, columns=features)
+results_df_gnb['actual_label'] = y_test.values
+results_df_gnb['predicted_label'] = y_pred
+results_df_gnb['id'] = range(1, len(results_df_gnb) + 1)
+results_df_gnb.insert(0, 'id', results_df_gnb.pop('id'))
 
 # Saving results to database and CSV file
-results_df.to_sql(name='gaussian_nb', con=engine, if_exists='replace', index=False)
+results_df_gnb.to_sql(name='gaussian_nb', con=engine, if_exists='replace', index=False)
 
 # Getting the report as a dictionary
-report = classification_report(y_test, y_pred, output_dict=True)
+reportGNB = classification_report(y_test, y_pred, output_dict=True)
 
 # Getting values for class 'M'
-precision_M = report['M']['precision']
-recall_M = report['M']['recall']
-f1_M = report['M']['f1-score']
+precision_M = reportGNB['M']['precision']
+recall_M = reportGNB['M']['recall']
+f1_M = reportGNB['M']['f1-score']
 
 # Getting values for class 'B'
-precision_B = report['B']['precision']
-recall_B = report['B']['recall']
-f1_B = report['B']['f1-score']
-
-print(f"Precision (M): {precision_M:.2f}")
-print(f"Recall (M): {recall_M:.2f}")
-print(f"F1 Score (M): {f1_M:.2f}")
-
-print(f"Precision (B): {precision_B:.2f}")
-print(f"Recall (B): {recall_B:.2f}")
-print(f"F1 Score (B): {f1_B:.2f}")
+precision_B = reportGNB['B']['precision']
+recall_B = reportGNB['B']['recall']
+f1_B = reportGNB['B']['f1-score']
