@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const DataTable = () => {
+    const [isShow, setIsShow] = useState(false)
+    const [searchQuery, setSearchQuery] = useState(null)
     const [data, setData] = useState([]);
+    const [originalData, setOriginalData] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -13,6 +17,7 @@ const DataTable = () => {
             try {
                 const response = await axios.get('http://127.0.0.1:5000/data'); // URL Flask
                 setData(response.data); // Menyimpan data ke state
+                setOriginalData(response.data); // Simpan data asli
             } catch (err) {
                 setError('Failed to fetch data from the server');
             }
@@ -30,6 +35,21 @@ const DataTable = () => {
         }
     };
 
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        if (query === "") {
+            setData(originalData); // Kembalikan data ke keadaan semula jika query kosong
+        } else {
+            const filteredData = originalData.filter(row =>
+                row.id.toString().includes(query) ||
+                row.diagnosis.toLowerCase().includes(query)
+            );
+            setData(filteredData);
+        }
+    }
+
     return (
         <motion.div
             className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg overflow-hidden border border-gray-700 rounded-xl p-6'
@@ -37,6 +57,26 @@ const DataTable = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
         >
+            <div className='flex justify-between items-center mb-6'>
+                <h2 className='text-lg font-medium text-gray-100'>Parameters</h2>
+                <div className='relative'>
+                    <motion.input
+                        initial={{ translateX: -20 }}
+                        animate={{ translateX: isShow ? 0 : -20 }}
+                        style={{ display: isShow ? "block" : "none" }}
+                        placeholder='Cari produk...'
+                        className='bg-gray-900/50 text-white pl-10 pr-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        onChange={handleSearch}
+                        value={searchQuery}
+                    />
+                    <Search
+                        onClick={() => setIsShow(!isShow)}
+                        className={isShow
+                            ? "absolute top-1/2 -translate-y-1/2 left-3 z-10" : null}
+                        size={18}
+                    />
+                </div>
+            </div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div className='overflow-x-auto overflow-y-auto max-h-96'>
                 <table className='table w-full'>
@@ -77,8 +117,13 @@ const DataTable = () => {
                         </tr>
                     </thead>
                     <tbody className='table-row-group'>
-                        {data.map((row) => (
-                            <tr key={row.id} className='table-row'>
+                        {data.map(row => (
+                            <motion.tr key={row.id}
+                                className='table-row'
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                            >
                                 <td>{row.id}</td>
                                 <td>{row.diagnosis}</td>
                                 <td>{row.radius_mean}</td>
@@ -110,7 +155,7 @@ const DataTable = () => {
                                 <td>{row.concave_points_worst}</td>
                                 <td>{row.symmetry_worst}</td>
                                 <td>{row.fractal_dimension_worst}</td>
-                            </tr>
+                            </motion.tr>
                         ))}
                     </tbody>
                 </table>
