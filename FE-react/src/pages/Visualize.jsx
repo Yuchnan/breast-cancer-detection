@@ -9,7 +9,7 @@ import ConfusionMatrix2 from '@mods/VisualizePage/ConfusionMatrix2'
 const Visualize = () => {
     return (
         <DefaultLayout>
-            <Header title="Visualize Page" />
+            <Header title="Visualization" />
             <main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
                 <div className='grid grid-col-1 gap-8 lg:grid-cols-2'>
                     <ClassificationReport />
