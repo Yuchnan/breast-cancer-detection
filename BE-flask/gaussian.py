@@ -50,7 +50,7 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('GaussianNB')
-plt.show()
+# plt.show()
 
 accuracy = accuracy_score(y_test, y_pred)
 print(f"GaussianNB Accuracy: {accuracy * 100:.2f}%")

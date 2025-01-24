@@ -51,7 +51,7 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('KNN')
-plt.show()
+# plt.show()
 
 accuracy = accuracy_score(y_test, y_pred)
 print(f"KNN Accuracy: {accuracy * 100:.2f}%")
