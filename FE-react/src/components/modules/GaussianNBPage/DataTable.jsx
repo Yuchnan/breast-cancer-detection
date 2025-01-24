@@ -52,7 +52,6 @@ const DataTable = () => {
                     <thead className='table-header-group'>
                         <tr className='table-row'>
                             <th className='table-cell'>id</th>
-                            <th className='table-cell'>diagnosis</th>
                             <th className='table-cell'>radius_mean</th>
                             <th className='table-cell'>texture_mean</th>
                             <th className='table-cell'>perimeter_mean</th>
@@ -90,7 +89,6 @@ const DataTable = () => {
                         {data.map((row) => (
                             <tr key={row.id} className='table-row'>
                                 <td>{row.id}</td>
-                                <td>{row.diagnosis}</td>
                                 <td>{row.radius_mean}</td>
                                 <td>{row.texture_mean}</td>
                                 <td>{row.perimeter_mean}</td>
