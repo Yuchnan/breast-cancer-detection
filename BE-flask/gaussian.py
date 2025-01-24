@@ -41,10 +41,10 @@ classifier.fit(x_train, y_train)
 y_pred = classifier.predict(x_test)
 labels = ["M", "B"]
 
-print(classification_report(y_test, y_pred))
+# print(classification_report(y_test, y_pred))
 conf_matrix = confusion_matrix(y_test, y_pred)
 conf_matrix_df_gnb = pd.DataFrame(conf_matrix, index=labels, columns=labels)
-print(conf_matrix_df_gnb)
+# print(conf_matrix_df_gnb)
 
 sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
@@ -53,7 +53,7 @@ plt.title('GaussianNB')
 # plt.show()
 
 accuracy = accuracy_score(y_test, y_pred)
-print(f"GaussianNB Accuracy: {accuracy * 100:.2f}%")
+# print(f"GaussianNB Accuracy: {accuracy * 100:.2f}%")
 
 results_df_gnb = pd.DataFrame(x_test, columns=features)
 results_df_gnb['actual_label'] = y_test.values
