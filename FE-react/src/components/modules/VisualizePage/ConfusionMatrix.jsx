@@ -28,6 +28,7 @@ const ConfusionMatrix = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
+            whileHover={{ y: -5, boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
         >
             <h2 className='text-lg font-medium mb-4 text-gray-100'>Confusion Matrix KNN</h2>
             <table className="mb-4" border="1" style={{ width: "100%", textAlign: "center" }}>

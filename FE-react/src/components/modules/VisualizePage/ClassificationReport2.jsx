@@ -38,7 +38,8 @@ const ClassificationReport = () => {
             className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg overflow-hidden border border-gray-700 rounded-xl p-6 mb-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.2 }}
+            whileHover={{ y: -5, boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
         >
             <h2 className='text-lg font-medium mb-4 text-gray-100'>Classification Report Gaussian NB</h2>
             <div>
