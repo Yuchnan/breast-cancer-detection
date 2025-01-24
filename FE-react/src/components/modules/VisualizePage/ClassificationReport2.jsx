@@ -17,9 +17,9 @@ const ClassificationReport = () => {
                     .map((key) => ({
                         model: "GNB",
                         class: key,
-                        precision: (response.data.knn[key].precision * 100).toFixed(2) + '%',
-                        recall: (response.data.knn[key].recall * 100).toFixed(2) + '%',
-                        f1_score: (response.data.knn[key]["f1-score"] * 100).toFixed(2) + '%'
+                        precision: (response.data.gnb[key].precision * 100).toFixed(2) + '%',
+                        recall: (response.data.gnb[key].recall * 100).toFixed(2) + '%',
+                        f1_score: (response.data.gnb[key]["f1-score"] * 100).toFixed(2) + '%'
                     }));
 
                 setClassificationReport([...gnbReport]);
