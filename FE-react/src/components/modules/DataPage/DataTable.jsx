@@ -12,6 +12,7 @@ const DataTable = () => {
     const [data, setData] = useState([]);
     const [originalData, setOriginalData] = useState([]);
     const [error, setError] = useState('');
+    const [sortOrder, setSortOrder] = useState({ column: '', order: 'asc' });
 
     useEffect(() => {
         // Mengambil data dari backend Flask
@@ -53,6 +54,19 @@ const DataTable = () => {
         }
     }
 
+    const handleSort = (column) => {
+        const order = sortOrder.column === column && sortOrder.order === 'asc' ? 'desc' : 'asc';
+        const sortedData = [...data].sort((a, b) => {
+            if (order === 'asc') {
+                return a[column] < b[column] ? -1 : a[column] > b[column] ? 1 : 0;
+            } else {
+                return a[column] > b[column] ? -1 : a[column] < b[column] ? 1 : 0;
+            }
+        });
+        setData(sortedData);
+        setSortOrder({ column, order });
+    };
+
     return (
         <motion.div
             className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg overflow-hidden border border-gray-700 rounded-xl p-6'
@@ -86,37 +100,37 @@ const DataTable = () => {
                     <thead className='table-header-group'>
                         <tr className='table-row'>
                             {/* Ganti kolom sesuai tabel MySQL Anda */}
-                            <th className='table-cell'>id</th>
-                            <th className='table-cell'>diagnosis</th>
-                            <th className='table-cell'>radius_mean</th>
-                            <th className='table-cell'>texture_mean</th>
-                            <th className='table-cell'>perimeter_mean</th>
-                            <th className='table-cell'>area_mean</th>
-                            <th className='table-cell'>smoothness_mean</th>
-                            <th className='table-cell'>compactness_mean</th>
-                            <th className='table-cell'>concavity_mean</th>
-                            <th className='table-cell'>concave_points_mean</th>
-                            <th className='table-cell'>symmetry_mean</th>
-                            <th className='table-cell'>fractal_dimension_mean</th>
-                            <th className='table-cell'>radius_se</th>
-                            <th className='table-cell'>texture_se</th>
-                            <th className='table-cell'>perimeter_se</th>
-                            <th className='table-cell'>area_se</th>
-                            <th className='table-cell'>smoothness_se</th>
-                            <th className='table-cell'>compactness_se</th>
-                            <th className='table-cell'>concavity_se</th>
-                            <th className='table-cell'>concave_points_se</th>
-                            <th className='table-cell'>symmetry_se</th>
-                            <th className='table-cell'>fractal_dimension_se</th>
-                            <th className='table-cell'>radius_worst</th>
-                            <th className='table-cell'>texture_worst</th>
-                            <th className='table-cell'>perimeter_worst</th>
-                            <th className='table-cell'>area_worst</th>
-                            <th className='table-cell'>smoothness_worst</th>
-                            <th className='table-cell'>compactness_worst</th>
-                            <th className='table-cell'>concave_points_worst</th>
-                            <th className='table-cell'>symmetry_worst</th>
-                            <th className='table-cell'>fractal_dimension_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('id')}>id</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('diagnosis')}>diagnosis</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('radius_mean')}>radius_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('texture_mean')}>texture_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('perimeter_mean')}>perimeter_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('area_mean')}>area_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('smoothness_mean')}>smoothness_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('compactness_mean')}>compactness_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('concavity_mean')}>concavity_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('concave_points_mean')}>concave_points_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('symmetry_mean')}>symmetry_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('fractal_dimension_mean')}>fractal_dimension_mean</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('radius_se')}>radius_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('texture_se')}>texture_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('perimeter_se')}>perimeter_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('area_se')}>area_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('smoothness_se')}>smoothness_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('compactness_se')}>compactness_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('concavity_se')}>concavity_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('concave_points_se')}>concave_points_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('symmetry_se')}>symmetry_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('fractal_dimension_se')}>fractal_dimension_se</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('radius_worst')}>radius_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('texture_worst')}>texture_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('perimeter_worst')}>perimeter_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('area_worst')}>area_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('smoothness_worst')}>smoothness_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('compactness_worst')}>compactness_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('concave_points_worst')}>concave_points_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('symmetry_worst')}>symmetry_worst</th>
+                            <th className='table-cell cursor-pointer' onClick={() => handleSort('fractal_dimension_worst')}>fractal_dimension_worst</th>
                         </tr>
                     </thead>
                     <tbody className='table-row-group'>

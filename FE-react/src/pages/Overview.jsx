@@ -14,7 +14,9 @@ const Overview = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                >Overview</motion.div>
+                >
+                    Overview is not available yet
+                </motion.div>
             </main>
         </DefaultLayout>
     )
