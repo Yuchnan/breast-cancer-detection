@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 const DataTable = () => {
     const [data, setData] = useState([])
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         // Getting data from Flask backend
@@ -28,20 +29,24 @@ const DataTable = () => {
             toast('Data truncated successfully')
             setData([])
         } catch (err) {
-            toast('Failed to truncate data on the server')
+            toast(err.message)
         }
     }
 
-    const handleGaussianNB = async () => {
+    const handleGaussianNB = async (e) => {
+        e.preventDefault()
         try {
+            setIsLoading(true)
             await axios.get('http://127.0.0.1:5000/gaussian_nb/run')
             toast('Model executed successfully')
             setTimeout(() => {
+                setIsLoading(false)
                 window.location.reload();
             }, 2000)
             setData([])
         } catch (err) {
-            toast('Failed to execute model')
+            setIsLoading(false)
+            toast(err.message)
         }
     }
 
@@ -137,13 +142,21 @@ const DataTable = () => {
                 </table>
             </div>
             {data.length > 0 && (
-                <button onClick={handleTruncate} className='w-full mt-4 text-white p-2 rounded btn btn-outline btn-error'>
-                    Truncate Data
+                <button
+                    onClick={handleTruncate}
+                    className='w-full mt-4 text-white p-2 rounded btn btn-outline btn-error'
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Mohon tunggu..." : "Truncate Data"}
                 </button>
             )}
             {data.length === 0 && (
-                <button onClick={handleGaussianNB} className='w-full mt-4 text-white p-2 rounded btn btn-outline btn-primary'>
-                    Execute Gaussian Naive Bayes
+                <button
+                    onClick={handleGaussianNB}
+                    disabled={isLoading}
+                    className='w-full mt-4 text-white p-2 rounded btn btn-outline btn-primary'
+                >
+                    {isLoading ? "Mohon tunggu..." : "Execute Gaussian Naive Bayes"}
                 </button>
             )}
         </motion.div>

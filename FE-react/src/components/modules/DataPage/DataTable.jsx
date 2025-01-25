@@ -8,11 +8,12 @@ import { motion } from 'framer-motion';
 
 const DataTable = () => {
     const [isShow, setIsShow] = useState(false)
-    const [searchQuery, setSearchQuery] = useState(null)
+    const [searchQuery, setSearchQuery] = useState('');
     const [data, setData] = useState([]);
     const [originalData, setOriginalData] = useState([]);
     const [error, setError] = useState('');
     const [sortOrder, setSortOrder] = useState({ column: '', order: 'asc' });
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // Mengambil data dari backend Flask
@@ -22,7 +23,7 @@ const DataTable = () => {
                 setData(response.data); // Menyimpan data ke state
                 setOriginalData(response.data); // Simpan data asli
             } catch (err) {
-                setError('Failed to fetch data from the server');
+                setError(err.message);
             }
         };
 
@@ -33,9 +34,9 @@ const DataTable = () => {
         try {
             await axios.delete('http://127.0.0.1:5000/data'); // URL untuk men-truncate data
             setData([]); // Mengosongkan data setelah truncate
-            toast("TRUNCATE SUCCESS!")
-        } catch (error) {
-            toast(error.message)
+            toast('Data truncated successfully')
+        } catch (err) {
+            toast(err.message)
         }
     };
 
