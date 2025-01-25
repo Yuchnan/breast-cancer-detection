@@ -30,6 +30,10 @@ const router = createBrowserRouter([
     path: "/visualize",
     element: <Visualize />
   },
+  {
+    path: "/visualize",
+    element: <Visualize />
+  },
 ])
 
 createRoot(document.getElementById('root')).render(

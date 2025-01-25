@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -30,8 +32,9 @@ const DataTable = () => {
         try {
             await axios.delete('http://127.0.0.1:5000/data'); // URL untuk men-truncate data
             setData([]); // Mengosongkan data setelah truncate
-        } catch (err) {
-            setError('Failed to truncate data on the server');
+            toast("TRUNCATE SUCCESS!")
+        } catch (error) {
+            toast(error.message)
         }
     };
 

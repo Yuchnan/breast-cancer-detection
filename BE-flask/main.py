@@ -3,8 +3,6 @@ from flask_cors import CORS
 import mysql.connector
 import pandas as pd
 from subprocess import call
-from knn import conf_matrix_df_knn, reportKNN, results_df_knn
-from gaussian import conf_matrix_df_gnb, reportGNB, results_df_gnb
 
 app = Flask(__name__)
 CORS(app)
@@ -191,25 +189,48 @@ def truncate_all_data():
 # Endpoint untuk confusion matrix
 @app.route('/confusion-matrix', methods=['GET'])
 def get_confusion_matrix():
-    return jsonify({
-        "knn": conf_matrix_df_knn.to_dict(),
-        "gnb": conf_matrix_df_gnb.to_dict()
-    })
+    # Cek apakah dataset knn dan gaussian_nb tidak kosong sebelum import
+    if not is_empty('knn') and not is_empty('gaussian_nb'):
+        from knn import conf_matrix_df_knn, reportKNN, results_df_knn
+        from gaussian import conf_matrix_df_gnb, reportGNB, results_df_gnb
+        return jsonify({
+            "knn": conf_matrix_df_knn.to_dict(),
+            "gnb": conf_matrix_df_gnb.to_dict()
+        })
+    return jsonify({"error": "Dataset kosong, tidak dapat melakukan import."}), 400
 
 @app.route('/classification-report', methods=['GET'])
 def get_classification_report():
-    return jsonify({
-        "knn": reportKNN,
-        "gnb": reportGNB
-    })
+    # Cek apakah dataset knn dan gaussian_nb tidak kosong sebelum import
+    if not is_empty('knn') and not is_empty('gaussian_nb'):
+        from knn import reportKNN
+        from gaussian import reportGNB
+        return jsonify({
+            "knn": reportKNN,
+            "gnb": reportGNB
+        })
+    return jsonify({"error": "Dataset kosong, tidak dapat melakukan import."}), 400
 
 @app.route('/predicted-results', methods=['GET'])
 def get_predicted_results():
-    return jsonify({
-        "knn": results_df_knn.to_dict(orient='records'),
-        "gnb": results_df_gnb.to_dict(orient='records')
-    })
+    # Cek apakah dataset knn dan gaussian_nb tidak kosong sebelum import
+    if not is_empty('knn') and not is_empty('gaussian_nb'):
+        from knn import results_df_knn
+        from gaussian import results_df_gnb
+        return jsonify({
+            "knn": results_df_knn.to_dict(orient='records'),
+            "gnb": results_df_gnb.to_dict(orient='records')
+        })
+    return jsonify({"error": "Dataset kosong, tidak dapat melakukan import."}), 400
 
+def is_empty(table_name):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+    count = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+    return count == 0
 
 if __name__ == '__main__':
     app.run(debug=True)

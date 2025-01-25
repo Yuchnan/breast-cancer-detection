@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
+import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 
 const FileUploader = () => {
     const [file, setFile] = useState(null);
-    const [message, setMessage] = useState('');
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -14,7 +14,7 @@ const FileUploader = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
-            setMessage('Please select a file.');
+            toast('Please select a file.');
             return;
         }
 
@@ -27,21 +27,23 @@ const FileUploader = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage(response.data.message);
             if (response.status === 200) {
-                window.location.reload(); // Reload halaman setelah upload berhasil
+                toast(response.data.message)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000)
             }
         } catch (error) {
-            setMessage(error.response?.data?.error || 'An error occurred.');
+            toast(error.message)
         }
     };
+
     return (
         <motion.div
             className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg overflow-hidden border border-gray-700 rounded-xl p-6 mb-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-
         >
             <h2 className='text-md font-medium mb-4 text-gray-100'>Upload CSV File</h2>
             <form
@@ -56,7 +58,7 @@ const FileUploader = () => {
                 />
                 <button className="btn btn-outline btn-info w-30">Upload</button>
             </form>
-            {message && <p>{message}</p>}
+            {/* {message && <p>{message}</p>} */}
         </motion.div>
     )
 }

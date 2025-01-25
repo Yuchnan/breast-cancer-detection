@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 
 const DataTable = () => {
@@ -24,18 +25,20 @@ const DataTable = () => {
     const handleTruncate = async () => {
         try {
             await axios.delete('http://127.0.0.1:5000/gaussian_nb')
+            toast('Data truncated successfully')
             setData([])
         } catch (err) {
-            setError('Failed to truncate data on the server')
+            toast('Failed to truncate data on the server')
         }
     }
 
     const handleGaussianNB = async () => {
         try {
             await axios.get('http://127.0.0.1:5000/gaussian_nb/run')
+            toast('Model executed successfully')
             setData([])
         } catch (err) {
-            setError('Failed to execute model')
+            toast('Failed to execute model')
         }
     }
 
@@ -86,8 +89,13 @@ const DataTable = () => {
                         </tr>
                     </thead>
                     <tbody className='table-row-group'>
-                        {data.map((row) => (
-                            <tr key={row.id} className='table-row'>
+                        {data.map(row => (
+                            <motion.tr key={row.id}
+                                className='table-row'
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                            >
                                 <td>{row.id}</td>
                                 <td>{row.radius_mean}</td>
                                 <td>{row.texture_mean}</td>
@@ -120,7 +128,7 @@ const DataTable = () => {
                                 <td>{row.fractal_dimension_worst}</td>
                                 <td>{row.actual_label}</td>
                                 <td>{row.predicted_label}</td>
-                            </tr>
+                            </motion.tr>
                         ))}
                     </tbody>
                 </table>
