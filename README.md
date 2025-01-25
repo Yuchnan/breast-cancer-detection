@@ -1,6 +1,6 @@
 # Breast Cancer Detection
 
-This project implements a machine learning-based approach for detecting breast cancer using patient diagnostic data. The system combines powerful algorithms, such as K-Nearest Neighbors (KNN) and Gaussian Naive Bayes, to classify tumors as malignant (M) or benign (B). The project also includes a modern React-based frontend for data visualization and API integration using Flask.
+This project implements a machine learning-based approach for detecting breast cancer using patient diagnostic dataset from Kaggle. The system combines powerful algorithms, such as K-Nearest Neighbors (KNN) and Gaussian Naive Bayes, to classify tumors as malignant (M) or benign (B). The project also includes a modern React-based frontend for data visualization and API integration using Flask.
 
 ### Clone this repository.
 
