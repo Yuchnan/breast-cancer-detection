@@ -50,6 +50,8 @@ def truncate_data_breast_cancer():
         conn.close()
 
         return jsonify({"message": "Data successfully truncated"}), 200
+    except mysql.connector.Error as db_err:
+        return jsonify({"error": f"Database error: {str(db_err)}"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
@@ -126,7 +128,10 @@ def truncate_data_knn():
     
 @app.route('/knn/run')
 def knn():
+    response = jsonify({"message": "KNN process started"})
     call(["python", "knn.py"])
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/gaussian_nb', methods=['GET'])
 def get_data_gaussian():
@@ -164,7 +169,10 @@ def truncate_data_gaussian():
     
 @app.route('/gaussian_nb/run')
 def gaussian_nb():
+    response = jsonify({"message": "Gaussian NB process started"})
     call(["python", "gaussian.py"])
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/truncate_all', methods=['DELETE'])
 def truncate_all_data():
@@ -172,11 +180,13 @@ def truncate_all_data():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Daftar tabel yang ingin di-truncate
-        tables = ['breast_cancer', 'knn', 'gaussian_nb']
-        for table in tables:
-            query = f"TRUNCATE TABLE {table}"
-            cursor.execute(query)
+        # Memisahkan perintah TRUNCATE untuk setiap tabel
+        try:
+            cursor.execute("TRUNCATE TABLE breast_cancer")
+            cursor.execute("TRUNCATE TABLE knn")
+            cursor.execute("TRUNCATE TABLE gaussian_nb")
+        except Exception as e:
+            print(f"Error truncating table  {str(e)}")  # Logging error
 
         conn.commit() 
         cursor.close()

@@ -1,7 +1,7 @@
 import React from 'react'
 import DefaultLayout from '@layouts/DefaultLayout'
 import Header from '@mods/common/Header'
-import DataTable from '@mods/GaussianNBPage/DataTable'
+import DataTable from '@mods/KNNPage/DataTable'
 
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from "react-toastify"

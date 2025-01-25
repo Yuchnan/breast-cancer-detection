@@ -37,6 +37,9 @@ const DataTable = () => {
             await axios.get('http://127.0.0.1:5000/knn/run')
             setData([])
             toast('Model executed successfully')
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000)
         } catch (err) {
             toast('Failed to execute model')
         }
@@ -97,7 +100,6 @@ const DataTable = () => {
                                 transition={{ delay: 0.3 }}
                             >
                                 <td>{row.id}</td>
-                                <td>{row.diagnosis}</td>
                                 <td>{row.radius_mean}</td>
                                 <td>{row.texture_mean}</td>
                                 <td>{row.perimeter_mean}</td>

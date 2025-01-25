@@ -36,6 +36,9 @@ const DataTable = () => {
         try {
             await axios.get('http://127.0.0.1:5000/gaussian_nb/run')
             toast('Model executed successfully')
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000)
             setData([])
         } catch (err) {
             toast('Failed to execute model')

@@ -11,21 +11,29 @@ const SIDEBAR_ITEMS = [
     { name: 'Data', icon: FileCode2, color: "#885CF6", path: "/data" },
     { name: 'KNN Model', icon: Database, color: "#F59E08", path: "/knn" },
     { name: 'GaussianNB Model', icon: Database, color: "#F59E08", path: "/gaussian_nb" },
-    { name: 'Visualize Data', icon: ChartArea, color: "#108981", path: "/visualize" },
+    { name: 'Visualization', icon: ChartArea, color: "#108981", path: "/visualize" },
 ]
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [, setData] = useState([])
 
     const handleTruncate = async (event) => {
         event.preventDefault(); // Mencegah navigasi ke halaman lain
-        try {
-            await axios.delete('http://127.0.0.1:5000/truncate_all')
+        const confirmDelete = window.confirm("Want to delete all datas?"); // Konfirmasi penghapusan
+        if (!confirmDelete) return; // Jika tidak dikonfirmasi, keluar dari fungsi
 
-            toast("All data has been truncated successfully!")
+        try {
+            const response = await axios.delete('http://127.0.0.1:5000/truncate_all');
+            console.log(response.data); // Menambahkan logging untuk respons
+            setData([]);
+            toast("All data has been truncated successfully!");
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000)
         } catch (err) {
             console.log(err); // Menambahkan logging untuk kesalahan
-            toast(err.message)
+            toast(err.message);
         }
     };
     return (
