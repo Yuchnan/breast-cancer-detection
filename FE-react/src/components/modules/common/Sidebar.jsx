@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
+import { toast } from 'react-toastify';
 import { BarChart2, FileCode2, Database, ChartArea, Trash2, Menu } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -9,11 +12,22 @@ const SIDEBAR_ITEMS = [
     { name: 'KNN Model', icon: Database, color: "#F59E08", path: "/knn" },
     { name: 'GaussianNB Model', icon: Database, color: "#F59E08", path: "/gaussian_nb" },
     { name: 'Visualize Data', icon: ChartArea, color: "#108981", path: "/visualize" },
-    { name: 'Delete All Data', icon: Trash2, color: "#EC4899", path: "/truncate_all" },
 ]
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+    const handleTruncate = async (event) => {
+        event.preventDefault(); // Mencegah navigasi ke halaman lain
+        try {
+            await axios.delete('http://127.0.0.1:5000/truncate_all')
+
+            toast("All data has been truncated successfully!")
+        } catch (err) {
+            console.log(err); // Menambahkan logging untuk kesalahan
+            toast(err.message)
+        }
+    };
     return (
         <motion.div
             className={`relative z-10 transition-all duration-300 ease-in-out flex-shrink-0 ${isSidebarOpen ? 'w-64' : 'w-20'}`}
@@ -49,6 +63,22 @@ const Sidebar = () => {
                             </motion.div>
                         </Link>
                     ))}
+                    <motion.div className='flex items-center p-4 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors mb-2 cursor-pointer' onClick={handleTruncate}>
+                        <Trash2 size={20} style={{ color: "#EC4899", minWidth: "20px" }} />
+                        <AnimatePresence>
+                            {isSidebarOpen && (
+                                <motion.span
+                                    className='ml-4 whitespace-nowrap'
+                                    initial={{ opacity: 0, width: 0 }}
+                                    animate={{ opacity: 1, width: "auto" }}
+                                    exit={{ opacity: 0, width: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    Delete All Data
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
                 </nav>
             </div>
         </motion.div>
