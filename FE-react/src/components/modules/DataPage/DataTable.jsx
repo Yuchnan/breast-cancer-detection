@@ -13,7 +13,6 @@ const DataTable = () => {
     const [originalData, setOriginalData] = useState([]);
     const [error, setError] = useState('');
     const [sortOrder, setSortOrder] = useState({ column: '', order: 'asc' });
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // Mengambil data dari backend Flask
@@ -98,7 +97,7 @@ const DataTable = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div className='overflow-x-auto overflow-y-auto max-h-96'>
                 <table className='table w-full'>
-                    <thead className='table-header-group'>
+                    <thead className='table-header-group font-bold text-white bg-gray-700'>
                         <tr className='table-row'>
                             {/* Ganti kolom sesuai tabel MySQL Anda */}
                             <th className='table-cell cursor-pointer' onClick={() => handleSort('id')}>id</th>

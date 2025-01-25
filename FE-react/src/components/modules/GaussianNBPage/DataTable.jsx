@@ -60,7 +60,7 @@ const DataTable = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div className='overflow-x-auto overflow-y-auto max-h-96'>
                 <table className='table w-full'>
-                    <thead className='table-header-group'>
+                    <thead className='table-header-group font-bold text-white bg-gray-700'>
                         <tr className='table-row'>
                             <th className='table-cell'>id</th>
                             <th className='table-cell'>radius_mean</th>
